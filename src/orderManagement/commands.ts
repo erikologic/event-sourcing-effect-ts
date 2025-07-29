@@ -12,7 +12,12 @@ export interface AddBillingDetailsCommand extends ICommand {
   _tag: "AddBillingDetailsCommand"
 }
 
+export interface AddPaymentCompletedCommand extends ICommand {
+  _tag: "AddPaymentCompletedCommand"
+}
+
 export type Commands =
   | AddItemToCartCommand
   | RemoveItemFromCartCommand
   | AddBillingDetailsCommand
+  | AddPaymentCompletedCommand

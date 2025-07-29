@@ -1,7 +1,13 @@
 import type { Same, SelectFunctionByDiscriminantValueInParams } from "src/libs/utils"
 import type { IEvolve } from "../functionalEventSourcing/types"
-import type { BillingDetailsAddedEvent, Events, ItemAddedEvent, ItemRemovedEvent } from "./events"
-import type { NewCartState, OpenCartState, States } from "./states"
+import type {
+  BillingDetailsAddedEvent,
+  Events,
+  ItemAddedEvent,
+  ItemRemovedEvent,
+  PaymentCompletedEvent
+} from "./events"
+import type { NewCartState, OpenCartState, OpenCartWithBillingState, OrderPlacedState, States } from "./states"
 
 export type OpenCartEvolve = IEvolve<
   NewCartState | OpenCartState,
@@ -12,12 +18,19 @@ export type OpenCartEvolve = IEvolve<
 export type OpenCartWithBillingDetailsEvolve = IEvolve<
   OpenCartState,
   BillingDetailsAddedEvent,
-  OpenCartState
+  OpenCartWithBillingState
+>
+
+export type AddPaymentCompletedEvolve = IEvolve<
+  OpenCartWithBillingState,
+  PaymentCompletedEvent,
+  OrderPlacedState
 >
 
 export type Evolvers =
   | OpenCartEvolve
   | OpenCartWithBillingDetailsEvolve
+  | AddPaymentCompletedEvolve
 
 export type EventsToStateToEvolversMap = {
   [TEvent in Events["_tag"]]: {

@@ -8,4 +8,12 @@ export interface OpenCartState extends IState {
   _tag: "OpenCartState"
 }
 
-export type States = NewCartState | OpenCartState
+export interface OpenCartWithBillingState extends IState {
+  _tag: "OpenCartWithBillingState"
+}
+
+export interface OrderPlacedState extends IState {
+  _tag: "OrderPlacedState"
+}
+
+export type States = NewCartState | OpenCartState | OpenCartWithBillingState

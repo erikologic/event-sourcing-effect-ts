@@ -1,18 +1,24 @@
 import type { IDecide } from "src/functionalEventSourcing/types"
 import type { Same, SelectFunctionByDiscriminantValueInParams } from "src/libs/utils"
-import type { AddBillingDetailsCommand, AddItemToCartCommand, Commands, RemoveItemFromCartCommand } from "./commands"
-import type { BillingDetailsAddedEvent, ItemAddedEvent, ItemRemovedEvent } from "./events"
-import type { NewCartState, OpenCartState, States } from "./states"
+import type {
+  AddBillingDetailsCommand,
+  AddItemToCartCommand,
+  AddPaymentCompletedCommand,
+  Commands,
+  RemoveItemFromCartCommand
+} from "./commands"
+import type { BillingDetailsAddedEvent, ItemAddedEvent, ItemRemovedEvent, PaymentCompletedEvent } from "./events"
+import type { NewCartState, OpenCartState, OpenCartWithBillingState, States } from "./states"
 
 export type AddItemToCartDecider = IDecide<
   AddItemToCartCommand,
-  NewCartState | OpenCartState,
+  NewCartState | OpenCartState | OpenCartWithBillingState,
   ItemAddedEvent
 >
 
 export type RemoveItemFromCartDecider = IDecide<
   RemoveItemFromCartCommand,
-  OpenCartState,
+  OpenCartState | OpenCartWithBillingState,
   ItemRemovedEvent
 >
 
@@ -22,14 +28,21 @@ export type AddBillingDetailsDecider = IDecide<
   BillingDetailsAddedEvent
 >
 
+export type AddPaymentCompletedDecider = IDecide<
+  AddPaymentCompletedCommand,
+  OpenCartWithBillingState,
+  PaymentCompletedEvent
+>
+
 export type Deciders =
   | AddItemToCartDecider
   | RemoveItemFromCartDecider
   | AddBillingDetailsDecider
+  | AddPaymentCompletedDecider
 
 export type CommandsToStateToDecidersMap = {
   [TCommand in Commands["_tag"]]: {
-    [TState in NewCartState["_tag"] | OpenCartState["_tag"]]: Same<
+    [TState in States["_tag"]]: Same<
       SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", TCommand>,
       SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", TState>
     >
