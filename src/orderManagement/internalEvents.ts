@@ -11,3 +11,8 @@ export interface ItemRemovedEvent extends IEvent {
 export interface BillingDetailsAddedEvent extends IEvent {
   _tag: "BillingDetailsAddedEvent"
 }
+
+export type InternalEvents =
+  | ItemAddedEvent
+  | ItemRemovedEvent
+  | BillingDetailsAddedEvent

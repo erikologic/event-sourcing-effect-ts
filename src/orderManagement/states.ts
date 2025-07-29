@@ -7,3 +7,5 @@ export interface NewCartState extends IState {
 export interface OpenCartState extends IState {
   _tag: "OpenCartState"
 }
+
+export type States = NewCartState | OpenCartState

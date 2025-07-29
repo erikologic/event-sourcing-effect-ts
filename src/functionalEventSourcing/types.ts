@@ -19,7 +19,7 @@ export type IEvolve<
   TInputState extends IState,
   TInputEvent extends IEvent,
   TOutputState extends IState
-> = (state: TInputState, event: Array<TInputEvent>) => TOutputState
+> = (state: TInputState, event: TInputEvent) => TOutputState
 
 export type IDecide<
   TCommand extends ICommand,

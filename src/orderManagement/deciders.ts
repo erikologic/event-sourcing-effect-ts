@@ -3,7 +3,7 @@ import type { AssertMapShape, SelectFunctionByDiscriminantValueInParams } from "
 import type {
   AddBillingDetailsCommand,
   AddItemToCartCommand,
-  ExternalCommand,
+  ExternalCommands,
   RemoveItemFromCartCommand
 } from "./externalCommands"
 import type { BillingDetailsAddedEvent, ItemAddedEvent, ItemRemovedEvent } from "./internalEvents"
@@ -33,6 +33,6 @@ export type Deciders =
   | AddBillingDetailsDecider
 
 export type CommandsToDecidersMap = {
-  [K in ExternalCommand["_tag"]]: SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", K>
+  [K in ExternalCommands["_tag"]]: SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", K>
 }
-const _assertDeciderMapShape: AssertMapShape<CommandsToDecidersMap, ExternalCommand["_tag"], Deciders> = true
+const _assertDeciderMapShape: AssertMapShape<CommandsToDecidersMap, ExternalCommands["_tag"], Deciders> = true

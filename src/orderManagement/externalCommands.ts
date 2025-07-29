@@ -12,7 +12,7 @@ export interface AddBillingDetailsCommand extends ICommand {
   _tag: "AddBillingDetailsCommand"
 }
 
-export type ExternalCommand =
+export type ExternalCommands =
   | AddItemToCartCommand
   | RemoveItemFromCartCommand
   | AddBillingDetailsCommand
