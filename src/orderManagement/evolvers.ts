@@ -1,6 +1,6 @@
 import type { Same, SelectFunctionByDiscriminantValueInParams } from "src/libs/utils"
 import type { IEvolve } from "../functionalEventSourcing/types"
-import type { BillingDetailsAddedEvent, InternalEvents, ItemAddedEvent, ItemRemovedEvent } from "./internalEvents"
+import type { BillingDetailsAddedEvent, Events, ItemAddedEvent, ItemRemovedEvent } from "./events"
 import type { NewCartState, OpenCartState, States } from "./states"
 
 export type OpenCartEvolve = IEvolve<
@@ -20,14 +20,14 @@ export type Evolvers =
   | OpenCartWithBillingDetailsEvolve
 
 export type EventsToStateToEvolversMap = {
-  [K in InternalEvents["_tag"]]: {
-    [S in States["_tag"]]: Same<
-      SelectFunctionByDiscriminantValueInParams<Evolvers, "_tag", K>,
-      SelectFunctionByDiscriminantValueInParams<Evolvers, "_tag", S>
+  [TEvent in Events["_tag"]]: {
+    [TStates in States["_tag"]]: Same<
+      SelectFunctionByDiscriminantValueInParams<Evolvers, "_tag", TEvent>,
+      SelectFunctionByDiscriminantValueInParams<Evolvers, "_tag", TStates>
     >
   }
 }
 
 export type Map = EventsToStateToEvolversMap extends
-  Record<InternalEvents["_tag"], Record<States["_tag"], IEvolve<any, any, any>> | never> ? true : false
+  Record<Events["_tag"], Record<States["_tag"], IEvolve<any, any, any>> | never> ? true : false
 const _assertMap: Map = true

@@ -1,13 +1,8 @@
 import type { IDecide } from "src/functionalEventSourcing/types"
-import type { AssertMapShape, SelectFunctionByDiscriminantValueInParams } from "src/libs/utils"
-import type {
-  AddBillingDetailsCommand,
-  AddItemToCartCommand,
-  ExternalCommands,
-  RemoveItemFromCartCommand
-} from "./externalCommands"
-import type { BillingDetailsAddedEvent, ItemAddedEvent, ItemRemovedEvent } from "./internalEvents"
-import type { NewCartState, OpenCartState } from "./states"
+import type { Same, SelectFunctionByDiscriminantValueInParams } from "src/libs/utils"
+import type { AddBillingDetailsCommand, AddItemToCartCommand, Commands, RemoveItemFromCartCommand } from "./commands"
+import type { BillingDetailsAddedEvent, ItemAddedEvent, ItemRemovedEvent } from "./events"
+import type { NewCartState, OpenCartState, States } from "./states"
 
 export type AddItemToCartDecider = IDecide<
   AddItemToCartCommand,
@@ -32,7 +27,14 @@ export type Deciders =
   | RemoveItemFromCartDecider
   | AddBillingDetailsDecider
 
-export type CommandsToDecidersMap = {
-  [K in ExternalCommands["_tag"]]: SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", K>
+export type CommandsToStateToDecidersMap = {
+  [TCommand in Commands["_tag"]]: {
+    [TState in NewCartState["_tag"] | OpenCartState["_tag"]]: Same<
+      SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", TCommand>,
+      SelectFunctionByDiscriminantValueInParams<Deciders, "_tag", TState>
+    >
+  }
 }
-const _assertDeciderMapShape: AssertMapShape<CommandsToDecidersMap, ExternalCommands["_tag"], Deciders> = true
+export type Map = CommandsToStateToDecidersMap extends
+  Record<Commands["_tag"], Record<States["_tag"], IDecide<any, any, any>> | never> ? true : false
+const _assertMap: Map = true

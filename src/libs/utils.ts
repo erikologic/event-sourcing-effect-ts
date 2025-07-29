@@ -19,16 +19,6 @@ export type SelectFunctionByDiscriminantValueInParams<
   : never
   : never
 
-export type HasNoNever<T> = { [K in keyof T]: T[K] extends never ? K : never }[keyof T] extends never ? true : false
-
-export type AssertMapShape<
-  MapType,
-  KeyUnion extends keyof any,
-  ValueType
-> = MapType extends Record<KeyUnion, ValueType> ? HasNoNever<MapType> extends true ? true
-  : ["Error: MapType contains 'never' values"]
-  : ["Error: MapType shape is invalid"]
-
 export type Same<A, B> = A extends B ? A :
   B extends A ? B :
   never
