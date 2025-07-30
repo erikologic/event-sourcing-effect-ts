@@ -1,8 +1,6 @@
 {
   "recommendations": [
-      "effectful-tech.effect-vscode",
       "dbaeumer.vscode-eslint",
-      "mxsdev.typescript-explorer",
       "mxsdev.typescript-explorer"
     ]
 }
