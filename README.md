@@ -1,31 +1,38 @@
-# Effect Package Template
+# Event Sourcing Types Only
 
-This template provides a solid foundation for building scalable and maintainable TypeScript package with Effect. 
+An Event Sourcing system based only on Typescript types.  
+Inspired by this [Functional Event Sourcing Decider](https://thinkbeforecoding.com/post/2021/12/17/functional-event-sourcing-decider) blog post.
 
-## Running Code
+_Event Sourcing TLDR: don't store the final state of an object, store the command/events that led to that state._
 
-This template leverages [tsx](https://tsx.is) to allow execution of TypeScript files via NodeJS as if they were written in plain JavaScript.
+## Architecture
 
-To execute a file with `tsx`:
+The Event Sourcing system is designed to follow the following steps at each clock:
 
-```sh
-pnpm tsx ./path/to/the/file.ts
-```
+- receive an input
+- process the received input through a decider
+- the decider produces a list of events
+- each event is processed by a fold function to produce a new state
+- once all events are folded, the final state is returned
 
-## Operations
+A clock is triggered by command reception.
 
-**Building**
+![Architecture Diagram](docs/diagram.svg)
 
-To build the package:
+_Note: in the blog post proposal, this is a pure functional core system._
+_The application layer is responsible for:_
 
-```sh
-pnpm build
-```
+- _translating external commands/events into internal commands_
+- _observing output events and triggering the associated side effects_
 
-**Testing**
+## Usage
 
-To test the package:
+- Press `.` or change the domain from `github.com` to `github.dev` (maintaining the URL) to open the editor.  
+- Open /src/index.ts 
+- Let few minutes for the Typescript engine to steam up in the browser.
+- Hover with the mouse on the example types to observe how the system works.
 
-```sh
-pnpm test
-```
+## Disclaimer
+
+This is a proof of concept, not a fully polished library.  
+It is just here to demonstrate how Typescript can be used to model an Event Sourcing system using types only.
