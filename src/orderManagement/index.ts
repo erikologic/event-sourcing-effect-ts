@@ -40,17 +40,17 @@ type _state3 = ReturnType<
   >
 >
 
+type FindEvolvers<TEvolvers extends Array<IEvolve<any, any, any>>, TState extends IState, TEvent extends IEvent> = Same<
+  SelectFunctionByDiscriminantValueInParams<TEvolvers[number], "_tag", TState["_tag"]>,
+  SelectFunctionByDiscriminantValueInParams<TEvolvers[number], "_tag", TEvent["_tag"]>
+>
+
 type Fold<TState extends IState, TEvents extends Array<IEvent>, TEvolvers extends Array<IEvolve<any, any, any>>> = (
   state: TState,
   events: TEvents,
   evolvers: TEvolvers
 ) => TEvents extends [infer CurrentEvent extends IEvent, ...infer RestEvents] ? [
-    ReturnType<
-      Same<
-        SelectFunctionByDiscriminantValueInParams<TEvolvers[number], "_tag", TState["_tag"]>,
-        SelectFunctionByDiscriminantValueInParams<TEvolvers[number], "_tag", CurrentEvent["_tag"]>
-      >
-    >,
+    ReturnType<FindEvolvers<TEvolvers, TState, CurrentEvent>>,
     RestEvents,
     TEvolvers
   ] :
