@@ -1,18 +1,20 @@
 // https://thinkbeforecoding.com/post/2021/12/17/functional-event-sourcing-decider
 
+import { number } from "effect/Equivalence"
+
 export interface IEvent {
   _type: "event"
-  _tag: unknown
+  _tag: string
 }
 
 export interface ICommand {
   _type: "command"
-  _tag: unknown
+  _tag: string
 }
 
 export interface IState {
   _type: "state"
-  _tag: unknown
+  _tag: string
 }
 
 export type IEvolve<
