@@ -38,7 +38,7 @@ export type FindEvolvers<
   SelectFunctionByDiscriminantValueInParams<TEvolvers[number], "_tag", TEvent["_tag"]>
 >
 
-export type Fold<
+export type FoldEvolvers<
   TState extends IState,
   TEvents extends Array<IEvent>,
   TEvolvers extends Array<IEvolve<any, any, any>>
@@ -49,7 +49,7 @@ export type Fold<
 ) => TEvents extends
   [infer CurrentEvent extends IEvent, infer NextEvent extends IEvent, ...infer RestEvents extends Array<IEvent>] ?
   ReturnType<FindEvolvers<TEvolvers, TState, CurrentEvent>> extends infer ResultState extends IState ? ReturnType<
-      Fold<
+      FoldEvolvers<
         ResultState,
         [NextEvent, ...RestEvents],
         TEvolvers
